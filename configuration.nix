@@ -79,6 +79,7 @@
       tree
       git
       gh
+      neovim
     ];
   };
 
