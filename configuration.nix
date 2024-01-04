@@ -18,7 +18,15 @@
   # Define on which hard drive you want to install Grub.
   boot.loader.grub.device = "/dev/sda"; # or "nodev" for efi only
 
-  networking.hostName = "nixos"; # Define your hostname.
+  # Enable Serial Console
+  boot.kernelParams = [ "console=ttyS0,115200n8" ];
+  boot.loader.grub.extraConfig = "
+    serial --speed=115200 --unit=0 --word=8 --parity=no --stop=1
+    terminal_input serial
+    terminal_output serial
+  ";
+
+  networking.hostName = "pve-de"; # Define your hostname.
   networking.interfaces.ens18.ipv4.addresses = [{
     address = "10.0.0.200";
     prefixLength = 24;
