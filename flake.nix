@@ -10,7 +10,7 @@
       lib = nixpkgs.lib;
     in {
       nixosConfigurations = {
-        nixos-full = lib.nixosSystem {
+        pve-de = lib.nixosSystem {
           system = "x86_64-linux";
           modules = [ ./configuration.nix ];
         };
