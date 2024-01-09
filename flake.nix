@@ -10,9 +10,13 @@
       lib = nixpkgs.lib;
     in {
       nixosConfigurations = {
+        wsl = lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [ ./wsl/configuration.nix ];
+        };
         pve-de = lib.nixosSystem {
           system = "x86_64-linux";
-          modules = [ ./configuration.nix ];
+          modules = [ ./pve-de/configuration.nix ];
         };
       };
     };
