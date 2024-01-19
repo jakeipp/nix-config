@@ -68,12 +68,19 @@
     ansible
     sshpass
     vim
-    neovim
     tmux
     jq
+    neovim
+    nodejs
+    ripgrep
     clang
     gcc
     lazygit
+    tree
+    htop
+    metasploit
+    nmap
+    openvpn
   ];  
 
   # This value determines the NixOS release from which the default
