@@ -16,6 +16,8 @@
   wsl.enable = true;
   wsl.defaultUser = "nixos";
 
+  time.timeZone = "America/New_York";
+
   # Configure SSH for Legacy Systems
   programs.ssh.ciphers = [
     "chacha20-poly1305@openssh.com"
@@ -81,6 +83,7 @@
     metasploit
     nmap
     openvpn
+    (python3.withPackages(ps: with ps; [pandas requests]))
   ];  
 
   # This value determines the NixOS release from which the default
