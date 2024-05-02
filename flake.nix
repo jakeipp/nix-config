@@ -18,6 +18,10 @@
           system = "x86_64-linux";
           modules = [ ./pve-de/configuration.nix ];
         };
+        ryzen = lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [ ./ryzen/configuration.nix ];
+        };
       };
     };
 }
