@@ -119,6 +119,7 @@
     curl
     htop
     unzip
+    gcc
     dig
     bind
     busybox
