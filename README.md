@@ -9,7 +9,7 @@ I also have a simple config for wsl which is currently mostly used for running a
 These must be run from the root directory of this repo.
 Switch to pve-de:
 ```bash
-sudo nixos-build switch --flake .#pve-de
+sudo nixos-rebuild switch --flake .#pve-de
 ```
 Switch to wsl:
 ```bash
