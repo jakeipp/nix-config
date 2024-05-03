@@ -103,6 +103,7 @@
       thunderbird
       remmina
       obsidian
+      libreoffice
       # webex
     ];
   };
@@ -121,6 +122,7 @@
     unzip
     gcc
     dig
+    zsv
     bind
     busybox
     toybox
@@ -129,6 +131,7 @@
     virt-manager
     gnome3.gnome-tweaks
     gnome3.gnome-shell-extensions
+    gnomeExtensions.forge
   ];
   nixpkgs.config.allowUnfreePredicate = pkg: 
     builtins.elem (lib.getName pkg) [
