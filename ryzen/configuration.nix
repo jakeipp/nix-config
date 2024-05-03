@@ -114,6 +114,7 @@
       remmina
       obsidian
       libreoffice
+      chromium
       # webex
     ];
   };
