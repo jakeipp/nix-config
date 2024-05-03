@@ -68,6 +68,16 @@
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
+  # Enable Syncthing
+  services = {
+    syncthing = {
+        enable = true;
+        user = "jake";
+        dataDir = "/home/jake/Documents";    # Default folder for new synced folders
+        configDir = "/home/jake/Documents/.config/syncthing";   # Folder for Syncthing's settings and keys
+    };
+  };
+
   # Enable sound with pipewire.
   sound.enable = true;
   hardware.pulseaudio.enable = false;
@@ -117,6 +127,11 @@
     git
     gh
     tmux
+    lazygit
+    lazydocker
+    lazycli
+    go
+    sqlite-interactive
     curl
     htop
     unzip
