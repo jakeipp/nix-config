@@ -3,24 +3,55 @@
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-23.11";
+
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    NixOS-WSL = {
+      url = "github:nix-community/NixOS-WSL";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, ... }:
+  outputs = { self, nixpkgs, ... }@inputs:
     let
       lib = nixpkgs.lib;
+      system = "x86_64-linux";
     in {
       nixosConfigurations = {
         wsl = lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [ ./wsl/configuration.nix ];
+          inherit system;
+          specialArgs = {
+            username = "jake";
+            hostName = "wsl";
+          };
+          modules = [ ./. ];
         };
-        pve-de = lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [ ./pve-de/configuration.nix ];
+        vm = lib.nixosSystem {
+          inherit system;
+          specialArgs = {
+            username = "jake";
+            hostName = "vm";
+          };
+          modules = [ ./. ];
+        };
+        vm-de = lib.nixosSystem {
+          inherit system;
+          specialArgs = {
+            username = "jake";
+            hostName = "vm-de";
+          };
+          modules = [ ./. ];
         };
         ryzen = lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [ ./ryzen/configuration.nix ];
+          inherit system;
+          specialArgs = {
+            username = "jake";
+            hostName = "ryzen";
+          } // inputs;
+          modules = [ ./. ];
         };
       };
     };

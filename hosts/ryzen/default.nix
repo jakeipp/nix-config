@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, username, ... }:
 
 {
   imports =
@@ -49,6 +49,7 @@
   services.xserver.videoDrivers = [ "amdgpu" ];
 
   # Enable the GNOME Desktop Environment.
+  programs.dconf.enable = true;
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome = {
     enable = true;
@@ -75,6 +76,10 @@
         user = "jake";
         dataDir = "/home/jake/Documents";    # Default folder for new synced folders
         configDir = "/home/jake/Documents/.config/syncthing";   # Folder for Syncthing's settings and keys
+    };
+    tailscale = {
+      enable = true;
+      useRoutingFeatures = "client";
     };
   };
 
@@ -103,8 +108,61 @@
   virtualisation.docker.enable = true;
   programs.virt-manager.enable = true;
 
+  programs.wireshark.enable = true;
+
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = false;
+    dedicatedServer.openFirewall = false;
+  };
+
+  # Configure SSH for Legacy Systems
+  programs.ssh.ciphers = [
+    "chacha20-poly1305@openssh.com"
+    "aes256-gcm@openssh.com"
+    "aes128-cbc"
+    "3des-cbc"
+    "aes192-cbc"
+    "aes256-cbc"
+    "aes128-ctr"
+    "aes192-ctr"
+    "aes256-ctr"
+  ];
+  programs.ssh.hostKeyAlgorithms = [
+    "ssh-ed25519"
+    "ssh-rsa"
+  ];
+  programs.ssh.kexAlgorithms = [
+    "diffie-hellman-group1-sha1"
+    "curve25519-sha256@libssh.org"
+    "ecdh-sha2-nistp256"
+    "ecdh-sha2-nistp384"
+    "ecdh-sha2-nistp521"
+    "diffie-hellman-group-exchange-sha256"
+    "diffie-hellman-group14-sha1"
+    "diffie-hellman-group1-sha1"
+  ];
+  programs.ssh.macs = [
+    "hmac-sha1"
+    "hmac-sha1-96"
+    "hmac-sha2-256"
+    "hmac-sha2-512"
+    "hmac-md5"
+    "hmac-md5-96"
+    "umac-64@openssh.com"
+    "umac-128@openssh.com"
+    "hmac-sha1-etm@openssh.com"
+    "hmac-sha1-96-etm@openssh.com"
+    "hmac-sha2-256-etm@openssh.com"
+    "hmac-sha2-512-etm@openssh.com"
+    "hmac-md5-etm@openssh.com"
+    "hmac-md5-96-etm@openssh.com"
+    "umac-64-etm@openssh.com"
+    "umac-128-etm@openssh.com"
+  ];
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.jake = {
+  users.users.${username} = {
     isNormalUser = true;
     description = "Jake";
     extraGroups = [ "networkmanager" "wheel" "docker" ];
@@ -115,6 +173,11 @@
       obsidian
       libreoffice
       chromium
+      openconnect
+      librewolf
+      tailscale
+      wireshark
+      dbeaver
       # webex
     ];
   };
@@ -122,11 +185,14 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    alacritty
     vim
     wget
     neovim
+    xclip
     git
     gh
+    jq
     tmux
     lazygit
     lazydocker
@@ -142,9 +208,12 @@
     bind
     busybox
     toybox
+    radeontop
     usbutils
     pciutils
     virt-manager
+    nmap
+    dnsrecon
     gnome3.gnome-tweaks
     gnome3.gnome-shell-extensions
     gnomeExtensions.forge
@@ -152,6 +221,9 @@
   nixpkgs.config.allowUnfreePredicate = pkg: 
     builtins.elem (lib.getName pkg) [
       "obsidian"
+      "steam"
+      "steam-original"
+      "steam-run"
       # "webex"
     ];
   nixpkgs.config.permittedInsecurePackages = [
