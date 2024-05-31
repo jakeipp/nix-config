@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, lib, pkgs, username, ... }:
+{ config, lib, pkgs, pkgs-unstable, username, ... }:
 
 {
   imports =
@@ -77,9 +77,11 @@
         dataDir = "/home/jake/Documents";    # Default folder for new synced folders
         configDir = "/home/jake/Documents/.config/syncthing";   # Folder for Syncthing's settings and keys
     };
+
     tailscale = {
       enable = true;
       useRoutingFeatures = "client";
+      package = pkgs-unstable.tailscale;
     };
   };
 
@@ -175,11 +177,13 @@
       chromium
       openconnect
       librewolf
-      tailscale
       wireshark
       dbeaver
       # webex
-    ];
+    ] ++ (with pkgs-unstable; [
+      tailscale
+      webex
+    ]);
   };
 
   # List packages installed in system profile. To search, run:
@@ -224,7 +228,6 @@
       "steam"
       "steam-original"
       "steam-run"
-      # "webex"
     ];
   nixpkgs.config.permittedInsecurePackages = [
     "electron-25.9.0"
