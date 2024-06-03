@@ -55,6 +55,14 @@
           } // inputs;
           modules = [ ./. ];
         };
+        legion = lib.nixosSystem {
+          inherit system;
+          specialArgs = {
+            username = "jake";
+            hostName = "legion";
+          } // inputs;
+          modules = [ ./. ];
+        };
       };
     };
 }
